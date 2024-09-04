@@ -64,7 +64,7 @@ export default function Home() {
         localStorage.removeItem("rememberedPassword");
       }
       // If validation passes, navigate to the dashboard
-      router.push("/dashboard-1");
+      router.push("/upload-client-data");
     }
   };
 
