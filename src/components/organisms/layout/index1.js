@@ -9,7 +9,7 @@ export const Sidebar = () => {
   };
 
   return (
-    <div className="flex flex-col justify-start text-center h-screen w-[240px]">
+    <div className="flex flex-col justify-start text-center h-full w-[240px]">
       {/* top image */}
       <div className="h-[70px] w-[240px] pt-[26px] pr-[26px] pb-[18px] pl-[29px] border-2 border-gray-300 bg-white">
         <img src="images/nidec_heading.png" alt="Nidec Heading"></img>
