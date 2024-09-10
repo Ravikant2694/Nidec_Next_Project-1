@@ -1,8 +1,12 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
+import ButtonComponent from "@/constants/routes";
 
 export const Sidebar = () => {
   const router = useRouter();
+
+  const pathname = usePathname();
 
   const handleLogout = () => {
     router.push("/");
@@ -16,16 +20,27 @@ export const Sidebar = () => {
       </div>
       {/* sidebar */}
       <div className="flex flex-col justify-between h-screen bg-black opacity-80 ">
-        <div className="flex flex-col">
-          <div className="h-[61px] w-[239px] poppins-semibold flex  items-center text-gray-400 hover:text-green-500 transition-colors duration-300 hover:border-l-4 border-l-4 border-black hover:border-green-500 ">
+        <div className="flex flex-col mt-5">
+          {/* <div
+            className={`${
+              pathname === "/upload-client-data" && "text-green-500 "
+            }h-[61px] w-[239px] poppins-semibold flex  items-center text-gray-400 hover:text-green-500 transition-colors duration-300 hover:border-l-4 border-l-4 border-black hover:border-green-500`}
+          >
             <span className="pl-[20px] pr-[20px] ">
               <i className="bi bi-upload"></i>
             </span>
-            <button type="button" onClick={() => router.push("/upload-client-data")}>
+            <button
+              type="button"
+              onClick={() => router.push("/upload-client-data")}
+            >
               Upload Client Data
             </button>
           </div>
-          <div className="h-[61px] w-[239px] poppins-semibold flex items-center  text-gray-400 mt-[5px] mb-[5px]  hover:text-green-500 transition-colors duration-300 hover:border-l-4 border-l-4 border-black hover:border-green-500">
+          <div
+            className={`${
+              pathname === "/download-results" && "text-green-500 "
+            }h-[61px] w-[239px] poppins-semibold flex  items-center text-gray-400 hover:text-green-500 transition-colors duration-300 hover:border-l-4 border-l-4 border-black hover:border-green-500`}
+          >
             <span className="pl-[20px] pr-[20px]">
               <i className="bi bi-download"></i>
             </span>
@@ -37,7 +52,11 @@ export const Sidebar = () => {
               Download Results
             </button>
           </div>
-          <div className="h-[61px] w-[239px] poppins-semibold flex items-center  text-gray-400  hover:text-green-500 transition-colors duration-300 hover:border-l-4 border-l-4 border-black hover:border-green-500">
+          <div
+            className={`${
+              pathname === "/customer-rules" && "text-green-500 "
+            }h-[61px] w-[239px] poppins-semibold flex  items-center text-gray-400 hover:text-green-500 transition-colors duration-300 hover:border-l-4 border-l-4 border-black hover:border-green-500`}
+          >
             <span className="pl-[20px] pr-[20px]">
               <i className="bi bi-list-ul"></i>
             </span>
@@ -48,7 +67,9 @@ export const Sidebar = () => {
             >
               Customer Rules
             </button>
-          </div>
+          </div> */}
+
+          <ButtonComponent/>
         </div>
         <div className="h-[61px] w-[239px] poppins-semibold flex justify-center items-center border-t-2 border-gray-700  text-white mb-[88px] pt-4">
           <button

@@ -1,5 +1,6 @@
 import DashboardLayout from "@/components/templete/dashboard";
 import { useState, useEffect } from "react";
+import { Button } from "@/components/atoms/button";
 
 const DownloadResults = () => {
   const [data, setData] = useState([]); // State to hold fetched data
@@ -7,17 +8,25 @@ const DownloadResults = () => {
   const [selectedFiles, setSelectedFiles] = useState([]); // State to hold selected files
   const [searchQuery, setSearchQuery] = useState(""); // State for search input
   const [filteredData, setFilteredData] = useState([]); // State for filtered data
+  const [loading, setLoading] = useState(false); // State for loading indicator
   const itemsPerPage = 7; // Number of items per page
 
-  useEffect(() => {
-    // Fetch data from the API
+  // Fetch data from the API
+  const fetchData = () => {
+    setLoading(true); // Set loading state to true
     fetch("https://663e20ebe1913c476796a1ab.mockapi.io/api/e-commerce/image")
       .then((result) => {
         result.json().then((res) => {
           setData(res);
           setFilteredData(res); // Initialize filteredData with all data
+          setLoading(false); // Set loading state to false after data is fetched
         });
-      });
+      })
+      .catch(() => setLoading(false)); // In case of error, set loading state to false
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   // Update filtered data whenever the search query changes
@@ -25,7 +34,6 @@ const DownloadResults = () => {
     const results = data.filter((item) =>
       item.filename.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
     setFilteredData(results);
   }, [searchQuery, data]);
 
@@ -72,7 +80,6 @@ const DownloadResults = () => {
     setSearchQuery(""); // Clear the search input
     setFilteredData(data); // Reset filtered data to all data
   };
-
   return (
     <DashboardLayout>
       <div className="flex text-[24px] pl-[31px] poppins-bold h-[95px] w-full items-center">
@@ -120,56 +127,77 @@ const DownloadResults = () => {
               </div>
             </div>
             {/* Clear All Button */}
-            <div className="h-[37px] w-[97px] flex justify-center items-center rounded-[10px] text-[14px] poppins-medium bg-green-500 hover:bg-[#0AA546] text-white">
-              <button type="button" onClick={handleClearAll}>
-                Clear All
-              </button>
+            <div>
+              <Button handleClearAllClick={handleClearAll}/>
             </div>
           </div>
         </div>
 
-        {/* Display current items in a table */}
-        <div className="p-4">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="poppins-medium">
-              <tr>
-                <th className="px-6 py-3 text-left text-[17px] font-medium uppercase">Date</th>
-                <th className="px-6 py-3 text-left text-[17px] font-medium uppercase">File Name</th>
-                <th className="px-6 py-3 text-left text-[17px] font-medium uppercase">File Size</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200 poppins-regular">
-              {currentItems.map((item) => (
-                <tr key={item.id}>
-                  <td className="px-6 py-4 justify-start flex text-[16px]">
-                    <p className="mr-4">
-                      <input
-                        type="checkbox"
-                        onChange={(e) => handleFileSelection(e, item)}
-                      />
-                    </p>
-                    {item.date}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-[16px]">{item.filename}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-[16px]">{item.filesize}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {/* Loading Indicator */}
+        {loading ? (
+          <div className="flex justify-center items-center my-4">
+            <img src="/images/Animation_reloader.gif"></img>
+          </div>
+        ) : (
+          <>
+            {/* Display current items in a table */}
+            <div className="p-4">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="poppins-medium">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-[17px] font-medium uppercase">
+                      Date
+                    </th>
+                    <th className="px-6 py-3 text-left text-[17px] font-medium uppercase">
+                      File Name
+                    </th>
+                    <th className="px-6 py-3 text-left text-[17px] font-medium uppercase">
+                      File Size
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200 poppins-regular">
+                  {currentItems.map((item) => (
+                    <tr key={item.id}>
+                      <td className="px-6 py-4 justify-start flex text-[16px]">
+                        <p className="mr-4">
+                          <input
+                            type="checkbox"
+                            onChange={(e) => handleFileSelection(e, item)}
+                          />
+                        </p>
+                        {item.date}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-[16px]">
+                        {item.filename}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-[16px]">
+                        {item.filesize}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
 
         {/* Pagination Controls */}
         <div className="flex justify-between mt-[20px] mb-[20px] mx-[8px]">
           <div className="poppins-medium text-[16px] text-[#B5B7C0]">
-            Showing data {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredData.length)} of {filteredData.length} entries
-          </div>
+            Showing data {indexOfFirstItem + 1} to{" "}
+            {Math.min(indexOfLastItem, filteredData.length)} of{" "}
+            {filteredData.length} entries
+          </div> 
           <div className="flex space-x-2">
             {Array.from({ length: totalPages }, (_, index) => (
               <button
                 key={index}
                 onClick={() => handlePageChange(index + 1)}
                 className={`px-3 py-1 border rounded ${
-                  currentPage === index + 1 ? "bg-green-500 text-white" : "bg-[#EEEEEE]"
+                  currentPage === index + 1
+                    ? "bg-green-500 text-white"
+                    : "bg-[#EEEEEE]"
                 }`}
               >
                 {index + 1}
@@ -183,3 +211,23 @@ const DownloadResults = () => {
 };
 
 export default DownloadResults;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

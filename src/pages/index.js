@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { InputField } from "@/components/atoms/button/input";
 
 export default function Home() {
   const router = useRouter();
@@ -100,19 +101,13 @@ export default function Home() {
           <form className="w-full" onSubmit={handleSignIn}>
             {/* Email Input */}
             <div className="relative h-[95px] mb-[28px]">
-              <label
-                className="text-[19px] poppins-medium mb-[5px]"
-                htmlFor="email"
-              >
-                Email
-              </label>
-              <input
-                className="w-full h-[61px] pt-[13px] pr-[19px] pb-[13px] pl-[19px] border-2 rounded-[11px]"
-                type="email"
-                id="email"
-                placeholder="Nidec.Hello@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+              <InputField
+                Title="Email" // Use a string for the Title
+                Type="email" // Use a string for the Type
+                id="email" // Use a string for the id
+                placeholder="Nidec.Hello@example.com" // Use a string for the placeholder
+                value={email} // Keep value as a variable
+                onChange={(e) => setEmail(e.target.value)} // onChange function is correct
               />
               {errors.email && (
                 <p className="text-red-500 mt-[5px] text-sm absolute">
@@ -122,23 +117,14 @@ export default function Home() {
             </div>
 
             {/* Password Input */}
-            <div
-              className="relative  h-[95px] mb-[28px]"
-              style={{ border: "1x solid red" }}
-            >
-              <label
-                className="text-[19px] poppins-medium mb-[5px]"
-                htmlFor="password"
-              >
-                Password
-              </label>
-              <input
-                className="w-full h-[61px] pt-[13px] pr-[19px] pb-[13px] pl-[19px] border-2 rounded-[11px]"
-                type="password"
-                id="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+            <div className="relative  h-[95px] mb-[28px]">
+            <InputField
+                Title=" Password" // Use a string for the Title
+                Type="password" // Use a string for the Type
+                id="password" // Use a string for the id
+                placeholder="Password" // Use a string for the placeholder
+                value={password} // Keep value as a variable
+                onChange={(e) => setPassword(e.target.value)} // onChange function is correct
               />
               {errors.password && (
                 <p className="text-red-500 mt-[5px] text-sm absolute">
@@ -176,3 +162,31 @@ export default function Home() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
